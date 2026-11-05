@@ -1,0 +1,152 @@
+c:\Users\jbara\Desktop\ecothech_JOYDA\requirements.txt c:\Users\jbara\Desktop\ecothech_JOYDA\src c:\Users\jbara\Desktop\ecothech_JOYDA\.env.example c:\Users\jbara\Desktop\ecothech_JOYDA\.gitignore c:\Users\jbara\Desktop\ecothech_JOYDA\README.md
+
+
+    opcion = validar_opcion("Seleccione servicio: ", 1, 4)
+
+    match opcion:
+
+        case 1:
+            return servicios[0], precios[0]
+
+        case 2:
+            return servicios[1], precios[1]
+
+        case 3:
+            return servicios[2], precios[2]
+
+        case 4:
+            return servicios[3], precios[3]
+
+
+# ==========================================
+# FUNCIÓN CALCULAR TOTAL
+# ==========================================
+
+def calcular_total(costo_paquete, costo_genero, costo_formato, costo_accesorio, costo_extras, costo_servicio, paquete, cantidad_extras):
+
+    subtotal = ( PRECIO_BASE + costo_paquete + costo_genero + costo_formato + costo_accesorio + costo_extras + costo_servicio)
+
+    descuento = 0
+
+    if paquete == "Pack premium" and cantidad_extras >= 3:
+        descuento = subtotal * 0.15
+
+    total = subtotal - descuento
+
+    return subtotal, descuento, total
+
+
+# ==========================================
+# FUNCIÓN MOSTRAR RESUMEN
+# ==========================================
+
+def mostrar_resumen(paquete,genero,formato,accesorio,extras,servicio,subtotal,descuento,total):
+
+    print("\n===================================")
+    print("        RESUMEN DEL PEDIDO")
+    print("===================================")
+
+    print(f"📦 Paquete: {paquete}")
+    print(f"📚 Género: {genero}")
+    print(f"📖 Formato: {formato}")
+    print(f"🎁 Accesorio: {accesorio}")
+
+
+
+    cantidad_extras = 0
+
+    for extra in extras:
+        cantidad_extras += 1
+
+    print(f"\n🛒 Cantidad de extras: {cantidad_extras}")
+
+    if extras != []:
+
+        print("\n✨ Extras seleccionados:")
+
+        for extra in extras:
+            print(f"- {extra}")
+
+    else:
+        print("No seleccionó extras.")
+
+    print(f"\n🚚 Servicio adicional: {servicio}")
+
+    print("\n-----------------------------------")
+
+    print(f"Subtotal: ${subtotal:,.0f}")
+    print(f"Descuento: ${descuento:,.0f}")
+    print(f"Total final: ${total:,.0f}")
+
+    print("===================================")
+
+
+# ==========================================
+# PROGRAMA PRINCIPAL
+# ==========================================
+
+while True:
+
+    limpiar()
+
+    paquete, costo_paquete = seleccionar_paquete()
+
+    limpiar()
+
+    genero, costo_genero = seleccionar_genero()
+
+    limpiar()
+
+    formato, costo_formato = seleccionar_formato()
+
+    limpiar()
+
+    accesorio = "No aplica"
+    costo_accesorio = 0
+
+    if paquete == "Pack premium":
+
+        accesorio, costo_accesorio = seleccionar_accesorios()
+
+    limpiar()
+
+    extras, costo_extras = seleccionar_extras()
+
+    limpiar()
+
+    servicio = "No aplica"
+    costo_servicio = 0
+
+    if paquete == "Pack doble" or paquete == "Pack premium":
+
+        servicio, costo_servicio = seleccionar_servicio()
+
+    limpiar()
+
+
+    cantidad_extras = 0
+
+    for extra in extras:
+        cantidad_extras += 1
+
+    subtotal, descuento, total = calcular_total(costo_paquete,costo_genero,costo_formato,costo_accesorio,costo_extras,costo_servicio,paquete,cantidad_extras)
+
+    mostrar_resumen(paquete,genero,formato,accesorio,extras,servicio,subtotal,descuento,total)
+
+    input("\nPresione ENTER para continuar...")
+
+    limpiar()
+
+    while True:
+
+        seguir = input("\n¿Desea realizar otra compra? (si/no): ").lower()
+
+        if seguir == "si":
+            break
+
+        elif seguir == "no":
+            print("\n💋 Gracias por comprar en Librería Online.")
+            break
+
+        else:
+            print("❌ Opción inválida.")
