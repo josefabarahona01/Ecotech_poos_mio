@@ -12,7 +12,7 @@ def abrir_conexion():
     motor = obtener_motor()
     if motor == "sqlite":
         return sqlite3.connect(os.getenv("DB_NAME", "ecotech.db"))
-    if motor == "mysql":
+    if motor in ("mysql", "mariadb"):
         return pymysql.connect(
             host=os.getenv("DB_HOST", "localhost"),
             port=int(os.getenv("DB_PORT", "3306")),
